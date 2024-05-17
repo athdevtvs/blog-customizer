@@ -1,46 +1,11 @@
 import { createRoot } from 'react-dom/client';
-import { StrictMode, CSSProperties, useState } from 'react';
-import clsx from 'clsx';
-
-import { Article } from './components/article/Article';
-import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
-import { ArrowButton } from './components/arrow-button';
-import { defaultArticleState } from './constants/articleProps';
+import { StrictMode } from 'react';
 
 import './styles/index.scss';
-import styles from './styles/index.module.scss';
+import { App } from './components/app';
 
 const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
-
-const App = () => {
-	const [isMenuOpen, setMenuOpen] = useState(false);
-
-	return (
-		<div
-			className={clsx(styles.main)}
-			style={
-				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
-					'--font-size': defaultArticleState.fontSizeOption.value,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
-				} as CSSProperties
-			}>
-			<ArticleParamsForm
-				isMenuOpen={isMenuOpen}
-				arrowButton={
-					<ArrowButton
-						isMenuOpen={isMenuOpen}
-						onClick={() => setMenuOpen((prev) => !prev)}
-					/>
-				}
-			/>
-			<Article />
-		</div>
-	);
-};
 
 root.render(
 	<StrictMode>

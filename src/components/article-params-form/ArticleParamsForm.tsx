@@ -1,21 +1,20 @@
-import { ReactNode } from 'react';
+import { useState } from 'react';
 import { Button } from 'components/button';
 
 import styles from './ArticleParamsForm.module.scss';
 import clsx from 'clsx';
 
-interface IArticleParamsFormProps {
-	isMenuOpen: boolean;
-	arrowButton: ReactNode;
-}
+import { ArrowButton } from '../arrow-button';
 
-export const ArticleParamsForm = ({
-	isMenuOpen,
-	arrowButton,
-}: IArticleParamsFormProps) => {
+export const ArticleParamsForm = () => {
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 	return (
 		<>
-			{arrowButton}
+			<ArrowButton
+				isMenuOpen={isMenuOpen}
+				onClick={() => setIsMenuOpen((prev) => !prev)}
+			/>
 			<aside
 				className={clsx({
 					[styles.container]: true,
