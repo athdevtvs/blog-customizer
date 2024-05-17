@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Button } from 'components/button';
 
 import styles from './ArticleParamsForm.module.scss';
@@ -18,11 +18,22 @@ import {
 	fontColors,
 	backgroundColors,
 	contentWidthArr,
+	ArticleStateType,
+	OptionType,
 } from 'src/constants/articleProps';
 
 export const ArticleParamsForm = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [formState, setFormState] = useState(defaultArticleState);
+
+	function handleChange(type: keyof ArticleStateType) {
+		return (value: OptionType) => {
+			setFormState((prev) => ({
+				...prev,
+				[type]: value,
+			}));
+		};
+	}
 
 	return (
 		<>
@@ -44,18 +55,21 @@ export const ArticleParamsForm = () => {
 						placeholder={FormTitles.fontFamily}
 						options={fontFamilyOptions}
 						selected={formState.fontFamilyOption}
+						onChange={handleChange('fontFamilyOption')}
 					/>
 					<RadioGroup
+						title={FormTitles.fontSize}
 						options={fontSizeOptions}
 						selected={formState.fontSizeOption}
 						name=''
-						title={FormTitles.fontSize}
+						onChange={handleChange('fontSizeOption')}
 					/>
 					<Select
 						title={FormTitles.fontColor}
 						placeholder={FormTitles.fontColor}
 						options={fontColors}
 						selected={formState.fontColor}
+						onChange={handleChange('fontColor')}
 					/>
 					<Separator />
 					<Select
@@ -63,12 +77,14 @@ export const ArticleParamsForm = () => {
 						placeholder={FormTitles.backgroundColor}
 						options={backgroundColors}
 						selected={formState.backgroundColor}
+						onChange={handleChange('backgroundColor')}
 					/>
 					<Select
 						title={FormTitles.contentWidth}
 						placeholder={FormTitles.contentWidth}
 						options={contentWidthArr}
 						selected={formState.contentWidth}
+						onChange={handleChange('contentWidth')}
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' />
