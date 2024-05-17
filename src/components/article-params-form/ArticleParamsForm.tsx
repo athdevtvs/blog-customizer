@@ -22,7 +22,11 @@ import {
 	OptionType,
 } from 'src/constants/articleProps';
 
-export const ArticleParamsForm = () => {
+interface IArticleParamsFormProps {
+	setAppState: (value: ArticleStateType) => void;
+}
+
+export const ArticleParamsForm = ({ setAppState }: IArticleParamsFormProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [formState, setFormState] = useState(defaultArticleState);
 
@@ -35,6 +39,17 @@ export const ArticleParamsForm = () => {
 		};
 	}
 
+	const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+		evt.preventDefault();
+		setAppState(formState);
+	};
+
+	const handleReset = (evt: FormEvent<HTMLFormElement>) => {
+		evt.preventDefault();
+		setFormState(defaultArticleState);
+		setAppState(defaultArticleState);
+	};
+
 	return (
 		<>
 			<ArrowButton
@@ -46,7 +61,10 @@ export const ArticleParamsForm = () => {
 					[styles.container]: true,
 					[styles.container_open]: isMenuOpen,
 				})}>
-				<form className={styles.form}>
+				<form
+					className={styles.form}
+					onSubmit={handleSubmit}
+					onReset={handleReset}>
 					<Text as='h2' size={31} weight={800} uppercase>
 						Задайте параметры
 					</Text>
