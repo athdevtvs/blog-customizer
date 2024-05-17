@@ -177,3 +177,11 @@ export const defaultArticleState = {
 };
 
 export type ArticleStateType = typeof defaultArticleState;
+
+export enum FormTitles {
+	fontFamily = 'Шрифт',
+	fontSize = 'Размер шрифта',
+	fontColor = 'Цвет шрифта',
+	backgroundColor = 'Цвет фона',
+	contentWidth = 'Ширина контента',
+}
