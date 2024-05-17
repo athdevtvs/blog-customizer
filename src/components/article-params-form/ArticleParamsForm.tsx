@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useRef } from 'react';
 import { Button } from 'components/button';
 
 import styles from './ArticleParamsForm.module.scss';
@@ -22,22 +22,26 @@ import {
 	OptionType,
 } from 'src/constants/articleProps';
 
-interface IArticleParamsFormProps {
-	setAppState: (value: ArticleStateType) => void;
-}
+import { useOnClickOutside } from './hooks/useOnClickOutside';
 
-export const ArticleParamsForm = ({ setAppState }: IArticleParamsFormProps) => {
+type ArticleParamsFormProps = {
+	setAppState: (value: ArticleStateType) => void;
+};
+
+export const ArticleParamsForm = ({ setAppState }: ArticleParamsFormProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [formState, setFormState] = useState(defaultArticleState);
+	const rootRef = useRef<HTMLElement | null>(null);
+	const arrowButtonRef = useRef<HTMLDivElement | null>(null);
 
-	function handleChange(type: keyof ArticleStateType) {
+	const handleChange = (type: keyof ArticleStateType) => {
 		return (value: OptionType) => {
 			setFormState((prev) => ({
 				...prev,
 				[type]: value,
 			}));
 		};
-	}
+	};
 
 	const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
 		evt.preventDefault();
@@ -50,17 +54,26 @@ export const ArticleParamsForm = ({ setAppState }: IArticleParamsFormProps) => {
 		setAppState(defaultArticleState);
 	};
 
+	useOnClickOutside({
+		rootRef,
+		arrowButtonRef,
+		isMenuOpen,
+		setIsMenuOpen,
+	});
+
 	return (
 		<>
 			<ArrowButton
 				isMenuOpen={isMenuOpen}
 				onClick={() => setIsMenuOpen((prev) => !prev)}
+				arrowButtonRef={arrowButtonRef}
 			/>
 			<aside
 				className={clsx({
 					[styles.container]: true,
 					[styles.container_open]: isMenuOpen,
-				})}>
+				})}
+				ref={rootRef}>
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit}
@@ -79,7 +92,7 @@ export const ArticleParamsForm = ({ setAppState }: IArticleParamsFormProps) => {
 						title={FormTitles.fontSize}
 						options={fontSizeOptions}
 						selected={formState.fontSizeOption}
-						name=''
+						name='fontSize'
 						onChange={handleChange('fontSizeOption')}
 					/>
 					<Select
